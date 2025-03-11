@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static', filename= 'style.css')}}">
+    <!-- here we imported and connected the boxicons website-->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- this part is for snowflakes -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        /* Background Image */
+        #background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: url('your-image.jpg') no-repeat center center/cover;
+            z-index: -1;
+        }
+        /* Snowflake Styles */
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: white;
+            font-size: 10px;
+            user-select: none;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to {
+                transform: translateY(100vh);
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="wrapper">
+        <form action="{{url_for('register')}}" method="POST">
+            <h1>Sign Up</h1>
+
+                                    <!--flash msgs-->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div>
+            {% for category, message in messages %}
+                <p class="{{ category }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+
+
+            <div class="input-box">
+                <input type="text" name="username"
+                placeholder="Username" required>
+                <!-- here we copied the symbol we want yaay -->
+                <i class='bx bxs-user'></i>
+            </div>
+
+            <div class="input-box">
+                <input type="password" name="password"
+                placeholder="Password" required>
+                <i class='bx bxs-lock-alt'></i>
+            </div>
+
+        
+
+            <input type="submit" value="Sign Up" class="btn">
+            
+            <div class="register-link">
+                <p>Already have an account?
+                    <a href="{{url_for(('login'))}}">Login</a>
+                </p>
+            </div>
+        </form>
+    </div>
+
+    <!-- this part is for snowflakes -->
+    <!-- Background Image -->
+    <div id="background"></div>
+
+    <script>
+        function createSnowflake() {
+            const snowflake = document.createElement("div");
+            snowflake.innerHTML = "&#10052;"; // Snowflake Unicode
+            snowflake.classList.add("snowflake");
+            document.body.appendChild(snowflake);
+
+            // Randomize snowflake properties
+            const size = Math.random() * 10 + 2 + "px"; 
+            snowflake.style.left = Math.random() * 100 + "vw";
+            snowflake.style.fontSize = size;
+            snowflake.style.animationDuration = Math.random() * 3 + 2 + "s";
+
+            // Remove snowflake after falling
+            setTimeout(() => {
+                snowflake.remove();
+            }, 5000);
+        }
+
+        // Create snowflakes at intervals
+        setInterval(createSnowflake, 100);
+    </script>
+
+
+
+</body>
+
+</html>
